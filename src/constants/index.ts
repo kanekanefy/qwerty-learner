@@ -1,3 +1,5 @@
+import type { ViewPreferenceConfig } from '@/typings'
+
 export const EXPLICIT_SPACE = '␣'
 
 export const CHAPTER_LENGTH = 20
@@ -15,4 +17,9 @@ export const CONFETTI_DEFAULTS = {
 export const defaultFontSizeConfig = {
   foreignFont: 48,
   translateFont: 18,
+}
+
+export const defaultViewPreferenceConfig: ViewPreferenceConfig = {
+  fontFamily: 'system',
+  contrastTheme: 'default',
 }

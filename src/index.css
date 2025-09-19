@@ -2,19 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.woff2') format('woff2'), url('/fonts/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Bold.woff2') format('woff2'), url('/fonts/OpenDyslexic-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ql-app-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  --ql-reading-word-font: 'JetBrains Mono', 'Fira Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
+  --ql-reading-translation-font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --ql-reading-letter-spacing: 0em;
+  --ql-background: #faf9ff;
+  --ql-text-primary: #1f2937;
+  --ql-text-muted: #4b5563;
+  --ql-support-text-color: #4b5563;
+  --ql-panel-background: rgba(255, 255, 255, 0.92);
+  --ql-panel-border: rgba(99, 102, 241, 0.25);
+  --ql-panel-shadow: 0 26px 48px rgba(99, 102, 241, 0.1);
+  --ql-word-color-default: #1f2937;
+  --ql-word-color-muted: #9ca3af;
+  --ql-word-color-correct: #16a34a;
+  --ql-word-color-wrong: #dc2626;
+  --ql-translation-color: #1f2937;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: var(--ql-app-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #faf9ff;
+  background-color: var(--ql-background);
+  color: var(--ql-text-primary);
   @apply transition-colors duration-300;
   user-select: none;
 }
 
 html.dark body {
   @apply bg-gray-900;
+}
+
+body[data-ql-contrast='default'] {
+  --ql-background: #faf9ff;
+  --ql-text-primary: #1f2937;
+  --ql-text-muted: #4b5563;
+  --ql-support-text-color: #4b5563;
+  --ql-panel-background: rgba(255, 255, 255, 0.92);
+  --ql-panel-border: rgba(99, 102, 241, 0.25);
+  --ql-panel-shadow: 0 26px 48px rgba(99, 102, 241, 0.1);
+  --ql-word-color-default: #1f2937;
+  --ql-word-color-muted: #9ca3af;
+  --ql-word-color-correct: #16a34a;
+  --ql-word-color-wrong: #dc2626;
+  --ql-translation-color: #1f2937;
+}
+
+body[data-ql-contrast='high'] {
+  --ql-background: #0b1120;
+  --ql-text-primary: #f8fafc;
+  --ql-text-muted: #facc15;
+  --ql-support-text-color: #fef9c3;
+  --ql-panel-background: #020617;
+  --ql-panel-border: rgba(250, 204, 21, 0.45);
+  --ql-panel-shadow: 0 30px 70px rgba(15, 23, 42, 0.75);
+  --ql-word-color-default: #facc15;
+  --ql-word-color-muted: #fde68a;
+  --ql-word-color-correct: #4ade80;
+  --ql-word-color-wrong: #f87171;
+  --ql-translation-color: #f8fafc;
+}
+
+body[data-ql-contrast='soft'] {
+  --ql-background: #fff6d9;
+  --ql-text-primary: #1f2937;
+  --ql-text-muted: #b45309;
+  --ql-support-text-color: #b45309;
+  --ql-panel-background: rgba(255, 251, 235, 0.92);
+  --ql-panel-border: rgba(234, 179, 8, 0.4);
+  --ql-panel-shadow: 0 24px 60px rgba(234, 179, 8, 0.2);
+  --ql-word-color-default: #1f2937;
+  --ql-word-color-muted: #ca8a04;
+  --ql-word-color-correct: #15803d;
+  --ql-word-color-wrong: #b91c1c;
+  --ql-translation-color: #1f2937;
+}
+
+body[data-ql-font='system'] {
+  --ql-reading-word-font: 'JetBrains Mono', 'Fira Mono', 'Menlo', 'Consolas', 'Courier New', monospace;
+  --ql-reading-translation-font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --ql-reading-letter-spacing: 0em;
+}
+
+body[data-ql-font='opendyslexic'] {
+  --ql-reading-word-font: 'OpenDyslexic', 'OpenDyslexic3', 'Lexend', 'Atkinson Hyperlegible', sans-serif;
+  --ql-reading-translation-font: 'OpenDyslexic', 'Lexend', 'Atkinson Hyperlegible', sans-serif;
+  --ql-reading-letter-spacing: 0.065em;
 }
 
 code {
@@ -53,6 +146,51 @@ body,
 
 .customized-scrollbar::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.ql-reading-panel {
+  border-radius: 24px;
+  border: 1px solid var(--ql-panel-border);
+  background-color: var(--ql-panel-background);
+  box-shadow: var(--ql-panel-shadow);
+  padding: 2.5rem 3rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.ql-reading-panel__support {
+  color: var(--ql-support-text-color);
+  transition: color 0.3s ease;
+}
+
+.ql-reading-panel__translation {
+  color: var(--ql-translation-color);
+  transition: color 0.3s ease;
+}
+
+.ql-font-word {
+  font-family: var(--ql-reading-word-font);
+  letter-spacing: var(--ql-reading-letter-spacing);
+}
+
+.ql-font-translation {
+  font-family: var(--ql-reading-translation-font);
+}
+
+.ql-letter {
+  color: var(--ql-word-color-default);
+  transition: color 0.2s ease;
+}
+
+.ql-letter--muted {
+  color: var(--ql-word-color-muted);
+}
+
+.ql-letter--correct {
+  color: var(--ql-word-color-correct);
+}
+
+.ql-letter--wrong {
+  color: var(--ql-word-color-wrong);
 }
 
 @layer components {
@@ -110,11 +248,29 @@ body,
   .listbox-button {
     @apply relative w-40 cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none dark:bg-gray-600;
   }
-  .listbox-button span:nth-of-type(1) {
+  .listbox-button > span:nth-of-type(1):not(.ql-select-icon) {
     @apply block truncate text-gray-900 dark:text-white dark:text-opacity-60;
   }
-  .listbox-button span:nth-of-type(2) {
+  .listbox-button > span:nth-of-type(2):not(.ql-select-icon) {
     @apply pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 focus:outline-none;
+  }
+  .listbox-button .ql-select-label {
+    @apply flex flex-col items-start overflow-visible whitespace-normal text-left;
+    text-overflow: initial;
+    gap: 0.25rem;
+  }
+  .listbox-button .ql-select-label > span {
+    @apply w-full;
+  }
+  .listbox-button .ql-select-description {
+    @apply leading-snug;
+    text-overflow: initial;
+  }
+  .listbox-button .ql-select-title {
+    @apply leading-tight;
+  }
+  .listbox-button .ql-select-icon {
+    @apply pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2;
   }
   .listbox-options {
     @apply absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg  focus:outline-none dark:bg-gray-600;

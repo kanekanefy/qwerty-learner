@@ -4,7 +4,7 @@ import { ErrorBook } from './pages/ErrorBook'
 import { FriendLinks } from './pages/FriendLinks'
 import MobilePage from './pages/Mobile'
 import TypingPage from './pages/Typing'
-import { isOpenDarkModeAtom } from '@/store'
+import { isOpenDarkModeAtom, viewPreferenceConfigAtom } from '@/store'
 import { Analytics } from '@vercel/analytics/react'
 import 'animate.css'
 import { useAtomValue } from 'jotai'
@@ -28,9 +28,22 @@ if (process.env.NODE_ENV === 'production') {
 
 function Root() {
   const darkMode = useAtomValue(isOpenDarkModeAtom)
+  const viewPreference = useAtomValue(viewPreferenceConfigAtom)
   useEffect(() => {
     darkMode ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark')
   }, [darkMode])
+
+  useEffect(() => {
+    const body = document.body
+    if (!body) return
+    body.dataset.qlFont = viewPreference.fontFamily
+  }, [viewPreference.fontFamily])
+
+  useEffect(() => {
+    const body = document.body
+    if (!body) return
+    body.dataset.qlContrast = viewPreference.contrastTheme
+  }, [viewPreference.contrastTheme])
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600)
 

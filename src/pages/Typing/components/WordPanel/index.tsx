@@ -160,25 +160,25 @@ export default function WordPanel() {
       </div>
       <div className="container flex flex-grow flex-col items-center justify-center">
         {currentWord && (
-          <div className="relative flex w-full justify-center">
-            {!state.isTyping && (
-              <div className="absolute flex h-full w-full justify-center">
-                <div className="z-10 flex w-full items-center backdrop-blur-sm">
-                  <p className="w-full select-none text-center text-xl text-gray-600 dark:text-gray-50">
+          <div className="relative flex w-full justify-center px-4 sm:px-8">
+            <div className="ql-reading-panel relative flex w-full max-w-4xl flex-col items-center">
+              {!state.isTyping && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm">
+                  <p className="ql-font-translation ql-reading-panel__support w-full select-none text-center text-xl">
                     按任意键{state.timerData.time ? '继续' : '开始'}
                   </p>
                 </div>
+              )}
+              <div className={`relative flex w-full flex-col items-center ${!state.isTyping ? 'opacity-30' : 'opacity-100'}`}>
+                <WordComponent word={currentWord} onFinish={onFinish} key={wordComponentKey} />
+                {phoneticConfig.isOpen && <Phonetic word={currentWord} />}
+                <Translation
+                  trans={currentWord.trans.join('；')}
+                  showTrans={shouldShowTranslation}
+                  onMouseEnter={() => handleShowTranslation(true)}
+                  onMouseLeave={() => handleShowTranslation(false)}
+                />
               </div>
-            )}
-            <div className="relative">
-              <WordComponent word={currentWord} onFinish={onFinish} key={wordComponentKey} />
-              {phoneticConfig.isOpen && <Phonetic word={currentWord} />}
-              <Translation
-                trans={currentWord.trans.join('；')}
-                showTrans={shouldShowTranslation}
-                onMouseEnter={() => handleShowTranslation(true)}
-                onMouseLeave={() => handleShowTranslation(false)}
-              />
             </div>
           </div>
         )}

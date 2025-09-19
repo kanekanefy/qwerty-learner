@@ -5,6 +5,14 @@ export type PhoneticType = 'us' | 'uk' | 'romaji' | 'zh' | 'ja' | 'de' | 'hapin'
 export type LanguageType = 'en' | 'romaji' | 'zh' | 'ja' | 'code' | 'de' | 'kk' | 'hapin' | 'id'
 export type LanguageCategoryType = 'en' | 'ja' | 'de' | 'code' | 'kk' | 'id'
 
+export type ViewFontFamilyOption = 'system' | 'opendyslexic'
+export type ViewContrastThemeOption = 'default' | 'high' | 'soft'
+
+export type ViewPreferenceConfig = {
+  fontFamily: ViewFontFamilyOption
+  contrastTheme: ViewContrastThemeOption
+}
+
 type Pronunciation2PhoneticMap = Record<PronunciationType, PhoneticType>
 
 export const PRONUNCIATION_PHONETIC_MAP: Pronunciation2PhoneticMap = {
