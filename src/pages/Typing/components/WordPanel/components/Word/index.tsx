@@ -24,8 +24,9 @@ import {
 import type { Word } from '@/typings'
 import { CTRL, getUtcStringForMixpanel } from '@/utils'
 import { useSaveWordRecord } from '@/utils/db'
+import { getSyllables } from '@/utils/syllable'
 import { useAtomValue } from 'jotai'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useImmer } from 'use-immer'
 
@@ -165,6 +166,32 @@ export default function WordComponent({ word, onFinish }: { word: Word; onFinish
     ],
   )
 
+  const syllableGroups = useMemo(() => getSyllables(word.name), [word.name])
+
+  const groupedLetters = useMemo(() => {
+    const characters = wordState.displayWord.split('')
+
+    if (syllableGroups.length === 0) {
+      return [characters.map((char, index) => ({ index, char }))]
+    }
+
+    let pointer = 0
+    const groups = syllableGroups.map((syllable) => {
+      const letters: { index: number; char: string }[] = []
+      while (pointer < characters.length && letters.length < syllable.length) {
+        letters.push({ index: pointer, char: characters[pointer] })
+        pointer += 1
+      }
+      return letters
+    })
+
+    if (pointer < characters.length || groups.some((group) => group.length === 0)) {
+      return [characters.map((char, index) => ({ index, char }))]
+    }
+
+    return groups
+  }, [syllableGroups, wordState.displayWord])
+
   useEffect(() => {
     const inputLength = wordState.inputWord.length
     /**
@@ -299,8 +326,24 @@ export default function WordComponent({ word, onFinish }: { word: Word; onFinish
             onMouseLeave={() => handleHoverWord(false)}
             className={`flex items-center ${isTextSelectable && 'select-all'} justify-center ${wordState.hasWrong ? style.wrong : ''}`}
           >
-            {wordState.displayWord.split('').map((t, index) => {
-              return <Letter key={`${index}-${t}`} letter={t} visible={getLetterVisible(index)} state={wordState.letterStates[index]} />
+            {groupedLetters.map((group, groupIndex) => {
+              const shouldHideSeparator = group.some(({ char }) => char === EXPLICIT_SPACE || !/[a-zA-Z]/.test(char))
+
+              return (
+                <span
+                  key={`syllable-${groupIndex}`}
+                  className={`${style.syllableGroup} ${shouldHideSeparator ? style.syllableGroupNoSeparator : ''}`}
+                >
+                  {group.map(({ index, char }) => (
+                    <Letter
+                      key={`${index}-${char}`}
+                      letter={char}
+                      visible={getLetterVisible(index)}
+                      state={wordState.letterStates[index]}
+                    />
+                  ))}
+                </span>
+              )
             })}
           </div>
           {pronunciationIsOpen && (

@@ -58,7 +58,7 @@
 
 ## 5. 技术方案详解
 
-- **音节拆分**：首期基于现有开源规则（如 `hyphenation.en-us`）生成词典，并保存在 `src/resources/syllable-map.json`。提供手动覆盖配置，以满足特例。后续可考虑服务端生成。
+- **音节拆分**：前端直接使用 `compromise-speech` 规则库实时拆分，`getSyllables` 提供缓存与兜底正则，配合音节颜色渲染；若需强制修正可通过 overrides 扩展。
 - **音频切分**：新增 CLI（`scripts/audio-split.ts`）读取原始 MP3，根据词典时间戳输出 WebM 片段或 JSON 元数据。前端播放时，优先加载本地片段，若缺失则退化为整段播放。
 - **IndexedDB 缓存**：使用 Dexie 表 `mediaAssets`，存储图片 Base64 与音频段路径，设置 TTL（默认 30 天）。为避免膨胀，需在启动时执行清理策略。
 - **状态管理**：所有新偏好值放入 `userPreferenceAtom`，通过 `persistAtom` 辅助器写入 localStorage/Dexie。奖励与任务另起 atom，便于后续多账号扩展。

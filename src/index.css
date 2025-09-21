@@ -177,7 +177,7 @@ body,
 }
 
 .ql-letter {
-  color: var(--ql-word-color-default);
+  color: var(--ql-letter-color, var(--ql-word-color-default));
   transition: color 0.2s ease;
 }
 

@@ -2970,9 +2970,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001449, caniuse-lite@^1.0.30001464:
-  version "1.0.30001655"
-  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001655.tgz"
-  integrity sha512-jRGVy3iSGO5Uutn2owlb5gR6qsGngTw9ZTb4ali9f3glshcNmJ2noam4Mo9zia5P9Dk3jNNydy7vQjuE5dQmfg==
+  version "1.0.30001743"
+  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001743.tgz"
+  integrity sha512-e6Ojr7RV14Un7dz6ASD0aZDmQPT/A+eZU+nuTNfjqmRrmkmQlnTNWH0SKmqagx9PeW87UVqapSurtAXifmtdmw==
 
 canvas-confetti@^1.6.0:
   version "1.6.0"
@@ -3097,6 +3097,11 @@ clsx@2.0.0, clsx@^2.0.0:
   resolved "https://registry.npmjs.org/clsx/-/clsx-2.0.0.tgz#12658f3fd98fafe62075595a5c30e43d18f3d00b"
   integrity sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==
 
+cmu-pronouncing-dictionary@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/cmu-pronouncing-dictionary/-/cmu-pronouncing-dictionary-3.0.0.tgz#1a34297a97b5056965f1237bb63ee1276ab93f9d"
+  integrity sha512-6y5X4OxsYFnHERo6WSVPnLrk53G07MOQ8aUb2z555JgwynpbZsHR0a//WdN6DUcmE1j2auTF2TtL4PpoKze8QQ==
+
 codepage@~1.15.0:
   version "1.15.0"
   resolved "https://registry.npmjs.org/codepage/-/codepage-1.15.0.tgz"
@@ -3161,6 +3166,20 @@ commander@^8.0.0:
   version "8.3.0"
   resolved "https://registry.npmmirror.com/commander/-/commander-8.3.0.tgz"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
+
+compromise-speech@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmmirror.com/compromise-speech/-/compromise-speech-0.1.1.tgz#cf99afef4300b811495c329c2ec228773ada1efc"
+  integrity sha512-nTT/zi0cNQXoiwnvJVl6Sm9TLE+esHmjRHISmyPw3DtiLPagpaONFKa/rY/gCgvOGemOkr3i4jOj+gG5YtdsOw==
+
+compromise@^14.14.4:
+  version "14.14.4"
+  resolved "https://registry.npmmirror.com/compromise/-/compromise-14.14.4.tgz#30c4fc934723a60bf65c9dcb4b7312b64a6cb027"
+  integrity sha512-QdbJwronwxeqb7a5KFK/+Y5YieZ4PE1f7ai0vU58Pp4jih+soDCBMuKVbhDEPQ+6+vI3vSiG4UAAjTAXLJw1Qw==
+  dependencies:
+    efrt "2.7.0"
+    grad-school "0.0.5"
+    suffix-thumb "5.0.2"
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -3418,6 +3437,11 @@ echarts@^5.4.2:
   dependencies:
     tslib "2.3.0"
     zrender "5.4.3"
+
+efrt@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.npmmirror.com/efrt/-/efrt-2.7.0.tgz#8b021e69f75cfeed3f81ee058aa0c78265793324"
+  integrity sha512-/RInbCy1d4P6Zdfa+TMVsf/ufZVotat5hCw3QXmWtjU+3pFEOvOQ7ibo3aIxyCJw2leIeAMjmPj+1SLJiCpdrQ==
 
 ejs@^3.1.5:
   version "3.1.9"
@@ -4149,6 +4173,11 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   resolved "https://registry.npmmirror.com/graceful-fs/-/graceful-fs-4.2.11.tgz"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
+grad-school@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npmmirror.com/grad-school/-/grad-school-0.0.5.tgz#9e7b2084f3e137965c19b63ef0dfe49867194f43"
+  integrity sha512-rXunEHF9M9EkMydTBux7+IryYXEZinRk6g8OBOGDBzo/qWJjhTxy86i5q7lQYpCLHN8Sqv1XX3OIOc7ka2gtvQ==
+
 grapheme-splitter@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmmirror.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
@@ -4256,6 +4285,18 @@ husky@^8.0.0:
   version "8.0.3"
   resolved "https://registry.npmmirror.com/husky/-/husky-8.0.3.tgz"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
+
+hyphenation.en-us@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmmirror.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"
+  integrity sha512-ItXYgvIpfN8rfXl/GTBQC7DsSb5PPsKh9gGzViK/iWzCS5mvjDebFJ6xCcIYo8dal+nSp2rUzvTT7BosrKlL8A==
+  dependencies:
+    hypher "*"
+
+hypher@*, hypher@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.npmmirror.com/hypher/-/hypher-0.2.5.tgz#2fe456ed2a3fd4ed0d9e428617181c59f9a6dd02"
+  integrity sha512-kUTpuyzBWWDO2VakmjHC/cxesg4lKQP+Fdc+7lrK4yvjNjkV9vm5UTZMDAwOyyHTOpbkYrAMlNZHG61NnE9vYQ==
 
 iconv-lite@^0.6.3:
   version "0.6.3"
@@ -6064,6 +6105,11 @@ sucrase@^3.32.0:
     mz "^2.7.0"
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
+
+suffix-thumb@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmmirror.com/suffix-thumb/-/suffix-thumb-5.0.2.tgz#b38940faddb3ae8b5fd281c7ec5830c25a6b2c9c"
+  integrity sha512-I5PWXAFKx3FYnI9a+dQMWNqTxoRt6vdBdb0O+BJ1sxXCWtSoQCusc13E58f+9p4MYx/qCnEMkD5jac6K2j3dgA==
 
 supports-color@^5.3.0, supports-color@^5.4.0:
   version "5.5.0"

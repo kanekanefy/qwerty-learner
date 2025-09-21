@@ -42,3 +42,32 @@
   fill: theme('colors.gray.50');
   opacity: 0.8;
 }
+
+.syllableGroup {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  --syllable-index: 0;
+  color: var(--syllable-color, inherit);
+  --ql-letter-color: var(--syllable-color, var(--ql-word-color-default));
+}
+
+.syllableGroup + .syllableGroup {
+  margin-left: 0.25rem;
+}
+
+.syllableGroup:nth-of-type(4n + 1) {
+  --syllable-color: var(--syllable-color-1, #facc15);
+}
+
+.syllableGroup:nth-of-type(4n + 2) {
+  --syllable-color: var(--syllable-color-2, #38bdf8);
+}
+
+.syllableGroup:nth-of-type(4n + 3) {
+  --syllable-color: var(--syllable-color-3, #f472b6);
+}
+
+.syllableGroup:nth-of-type(4n) {
+  --syllable-color: var(--syllable-color-4, #a855f7);
+}
