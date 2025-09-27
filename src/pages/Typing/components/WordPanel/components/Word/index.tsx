@@ -166,71 +166,70 @@ export default function WordComponent({ word, onFinish }: { word: Word; onFinish
   )
 
   useEffect(() => {
-    const inputLength = wordState.inputWord.length
-    /**
-     * TODO: 当用户输入错误时，会报错
-     * Cannot update a component (`App`) while rendering a different component (`WordComponent`). To locate the bad setState() call inside `WordComponent`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
-     * 目前不影响生产环境，猜测是因为开发环境下 react 会两次调用 useEffect 从而展示了这个 warning
-     * 但这终究是一个 bug，需要修复
-     */
-    if (wordState.hasWrong || inputLength === 0 || wordState.displayWord.length === 0) {
-      return
-    }
-
-    const inputChar = wordState.inputWord[inputLength - 1]
-    const correctChar = wordState.displayWord[inputLength - 1]
-    let isEqual = false
-    if (inputChar != undefined && correctChar != undefined) {
-      isEqual = isIgnoreCase ? inputChar.toLowerCase() === correctChar.toLowerCase() : inputChar === correctChar
-    }
-
-    if (isEqual) {
-      // 输入正确时
-      setWordState((state) => {
-        state.letterTimeArray.push(Date.now())
-        state.correctCount += 1
-      })
-
-      if (inputLength >= wordState.displayWord.length) {
-        // 完成输入时
-        setWordState((state) => {
-          state.letterStates[inputLength - 1] = 'correct'
-          state.isFinished = true
-          state.endTime = getUtcStringForMixpanel()
-        })
-        playHintSound()
-      } else {
-        setWordState((state) => {
-          state.letterStates[inputLength - 1] = 'correct'
-        })
-        playKeySound()
+    const handleCorrectInput = async () => {
+      const inputLength = wordState.inputWord.length
+      if (wordState.hasWrong || inputLength === 0 || wordState.displayWord.length === 0) {
+        return
       }
 
-      dispatch({ type: TypingStateActionType.REPORT_CORRECT_WORD })
-    } else {
-      // 出错时
-      playBeepSound()
-      setWordState((state) => {
-        state.letterStates[inputLength - 1] = 'wrong'
-        state.hasWrong = true
-        state.hasMadeInputWrong = true
-        state.wrongCount += 1
-        state.letterTimeArray = []
+      const inputChar = wordState.inputWord[inputLength - 1]
+      const correctChar = wordState.displayWord[inputLength - 1]
+      let isEqual = false
+      if (inputChar != undefined && correctChar != undefined) {
+        isEqual = isIgnoreCase ? inputChar.toLowerCase() === correctChar.toLowerCase() : inputChar === correctChar
+      }
 
-        if (state.letterMistake[inputLength - 1]) {
-          state.letterMistake[inputLength - 1].push(inputChar)
-        } else {
-          state.letterMistake[inputLength - 1] = [inputChar]
+      if (isEqual) {
+        // 输入正确时
+        playKeySound()
+        playLetterSound(correctChar)
+        setWordState((state) => {
+          state.letterTimeArray.push(Date.now())
+          state.correctCount += 1
+          state.letterStates[inputLength - 1] = 'correct'
+        })
+
+        if (inputLength >= wordState.displayWord.length) {
+          // 完成输入时
+          await new Promise((resolve) => setTimeout(resolve, 200)) // 等待最后一个字母发音
+          wordPronunciationIconRef.current?.play()
+          await new Promise((resolve) => setTimeout(resolve, 1600)) // 等待单词发音
+
+          setWordState((state) => {
+            state.isFinished = true
+            state.endTime = getUtcStringForMixpanel()
+          })
+          playHintSound()
         }
 
-        const currentState = JSON.parse(JSON.stringify(state))
-        dispatch({ type: TypingStateActionType.REPORT_WRONG_WORD, payload: { letterMistake: currentState.letterMistake } })
-      })
+        dispatch({ type: TypingStateActionType.REPORT_CORRECT_WORD })
+      } else {
+        // 出错时
+        playBeepSound()
+        setWordState((state) => {
+          state.letterStates[inputLength - 1] = 'wrong'
+          state.hasWrong = true
+          state.hasMadeInputWrong = true
+          state.wrongCount += 1
+          state.letterTimeArray = []
 
-      if (currentChapter === 0 && state.chapterData.index === 0 && wordState.wrongCount >= 3) {
-        setShowTipAlert(true)
+          if (state.letterMistake[inputLength - 1]) {
+            state.letterMistake[inputLength - 1].push(inputChar)
+          } else {
+            state.letterMistake[inputLength - 1] = [inputChar]
+          }
+
+          const currentState = JSON.parse(JSON.stringify(state))
+          dispatch({ type: TypingStateActionType.REPORT_WRONG_WORD, payload: { letterMistake: currentState.letterMistake } })
+        })
+
+        if (currentChapter === 0 && state.chapterData.index === 0 && wordState.wrongCount >= 3) {
+          setShowTipAlert(true)
+        }
       }
     }
+
+    handleCorrectInput()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordState.inputWord])
 
