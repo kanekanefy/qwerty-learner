@@ -1,4 +1,4 @@
-import type { Config } from '@jest/types';
+import type { Config } from '@jest/types'
 
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
@@ -9,8 +9,8 @@ const config: Config.InitialOptions = {
   },
   testPathIgnorePatterns: ['/node_modules/', '/tests/e2e/'],
   transform: {
-    '^.+\.m?js$': 'ts-jest',
+    '^.+.m?js$': 'ts-jest',
   },
-};
+}
 
-export default config;
+export default config
