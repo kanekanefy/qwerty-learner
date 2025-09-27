@@ -1,6 +1,6 @@
 import atomForConfig from './atomForConfig'
 import { reviewInfoAtom } from './reviewInfoAtom'
-import { DISMISS_START_CARD_DATE_KEY, defaultFontSizeConfig, defaultViewPreferenceConfig } from '@/constants'
+import { DISMISS_START_CARD_DATE_KEY, defaultFontSizeConfig, defaultPracticeMediaConfig, defaultViewPreferenceConfig } from '@/constants'
 import { idDictionaryMap } from '@/resources/dictionary'
 import { correctSoundResources, keySoundResources, wrongSoundResources } from '@/resources/soundResource'
 import type {
@@ -64,6 +64,8 @@ export const fontSizeConfigAtom = atomForConfig('fontsize', defaultFontSizeConfi
 
 export const viewPreferenceConfigAtom = atomForConfig('viewPreferenceConfig', defaultViewPreferenceConfig)
 
+export const practiceMediaConfigAtom = atomForConfig('practiceMediaConfig', defaultPracticeMediaConfig)
+
 export const pronunciationIsOpenAtom = atom((get) => get(pronunciationConfigAtom).isOpen)
 
 export const pronunciationIsTransReadAtom = atom((get) => get(pronunciationConfigAtom).isTransRead)
@@ -108,6 +110,12 @@ export const wordDictationConfigAtom = atomForConfig('wordDictationConfig', {
   isOpen: false,
   type: 'hideAll' as WordDictationType,
   openBy: 'auto' as WordDictationOpenBy,
+})
+
+export const dyslexiaConfigAtom = atomForConfig('dyslexiaConfig', {
+  isDyslexiaModeEnabled: false,
+  ttsService: 'browser' as 'browser' | 'external',
+  isReadOutTypedLettersEnabled: false,
 })
 
 export const dismissStartCardDateAtom = atomWithStorage<Date | null>(DISMISS_START_CARD_DATE_KEY, null)

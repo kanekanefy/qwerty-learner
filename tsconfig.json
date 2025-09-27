@@ -15,17 +15,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["node", "unplugin-icons/types/react"],
+    "types": ["node", "unplugin-icons/types/react", "jest"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-      // "@/assets/*": ["assets/*"],
-      // "@/components/*": ["components/*"],
-      // "@/hooks/*": ["hooks/*"],
-      // "@/pages/*": ["pages/*"],
-      // "@/resources/*": ["resources/*"],
-      // "@/store/*": ["store/*"],
-      // "@/utils/*": ["utils/*"]
     },
     "plugins": [
       {
@@ -36,5 +29,5 @@
       }
     ]
   },
-  "include": ["src"]
+  "include": ["src", "jest.config.ts"]
 }

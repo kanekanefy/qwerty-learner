@@ -183,3 +183,22 @@ export class RevisionWordRecord implements IRevisionWordRecord {
     this.errorCount = errorCount
   }
 }
+
+export type MediaAssetSource = 'unsplash'
+
+export interface IMediaAssetRecord {
+  id?: number
+  word: string
+  query: string
+  source: MediaAssetSource
+  imageUrl: string
+  thumbUrl: string
+  color?: string | null
+  altDescription?: string | null
+  photographerName: string
+  photographerUsername?: string | null
+  photographerUrl: string
+  description?: string | null
+  fetchedAt: number
+  expiresAt: number
+}

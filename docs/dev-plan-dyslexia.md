@@ -39,6 +39,8 @@
 | B3   | 错误提示动画 | `src/components/FeedbackOverlay.tsx`                           | 使用 Framer Motion/Tailwind 动画；展示正确字母轮廓和发音提示                                      | 动画在 600ms 内结束且不阻塞输入               |
 | B4   | 奖励系统     | `src/store/reward.ts`, `src/components/RewardToast.tsx`        | 新建积分 store，动作触发器可配置；与 UI 粒子效果组件结合                                          | 奖励提示可开关；数据在报告中可见              |
 
+> 进度备注：B1 分段音频播放近期验证效果不佳，优先级暂时下调；B2 图像联想展示采用 Unsplash API + Dexie 缓存方案，需配置 `VITE_UNSPLASH_ACCESS_KEY` 并保留版权署名。
+
 ### 4.3 词库与个性化
 
 | 编号 | 功能点         | 主要改动文件                                                              | 技术方案                                                                   | 验收                                 |

@@ -1,4 +1,4 @@
-import { pronunciationConfigAtom } from '@/store'
+import { dyslexiaConfigAtom, pronunciationConfigAtom } from '@/store'
 import type { PronunciationType } from '@/typings'
 import { addHowlListener } from '@/utils'
 import { romajiToHiragana } from '@/utils/kana'
@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import useSound from 'use-sound'
 import type { HookOptions } from 'use-sound/dist/types'
 
-const pronunciationApi = 'https://dict.youdao.com/dictvoice?audio='
+const pronunciationApi = '/api/dictvoice?audio='
 export function generateWordSoundSrc(word: string, pronunciation: Exclude<PronunciationType, false>): string {
   switch (pronunciation) {
     case 'uk':
@@ -36,16 +36,35 @@ export function generateWordSoundSrc(word: string, pronunciation: Exclude<Pronun
 
 export default function usePronunciationSound(word: string, isLoop?: boolean) {
   const pronunciationConfig = useAtomValue(pronunciationConfigAtom)
+  const { ttsService } = useAtomValue(dyslexiaConfigAtom)
   const loop = useMemo(() => (typeof isLoop === 'boolean' ? isLoop : pronunciationConfig.isLoop), [isLoop, pronunciationConfig.isLoop])
   const [isPlaying, setIsPlaying] = useState(false)
 
-  const [play, { stop, sound }] = useSound(generateWordSoundSrc(word, pronunciationConfig.type), {
+  const [playExternal, { stop: stopExternal, sound }] = useSound(generateWordSoundSrc(word, pronunciationConfig.type), {
     html5: true,
     format: ['mp3'],
     loop,
     volume: pronunciationConfig.volume,
     rate: pronunciationConfig.rate,
   } as HookOptions)
+
+  const playBrowser = () => {
+    const utterance = new SpeechSynthesisUtterance(word)
+    utterance.lang = 'en-US' // Or get lang from somewhere
+    utterance.rate = pronunciationConfig.rate
+    utterance.volume = pronunciationConfig.volume
+    utterance.onstart = () => setIsPlaying(true)
+    utterance.onend = () => setIsPlaying(false)
+    speechSynthesis.speak(utterance)
+  }
+
+  const stopBrowser = () => {
+    speechSynthesis.cancel()
+    setIsPlaying(false)
+  }
+
+  const play = ttsService === 'browser' ? playBrowser : playExternal
+  const stop = ttsService === 'browser' ? stopBrowser : stopExternal
 
   useEffect(() => {
     if (!sound) return
@@ -54,7 +73,7 @@ export default function usePronunciationSound(word: string, isLoop?: boolean) {
   }, [loop, sound])
 
   useEffect(() => {
-    if (!sound) return
+    if (!sound || ttsService === 'browser') return
     const unListens: Array<() => void> = []
 
     unListens.push(addHowlListener(sound, 'play', () => setIsPlaying(true)))
@@ -67,7 +86,7 @@ export default function usePronunciationSound(word: string, isLoop?: boolean) {
       unListens.forEach((unListen) => unListen())
       ;(sound as Howl).unload()
     }
-  }, [sound])
+  }, [sound, ttsService])
 
   return { play, stop, isPlaying }
 }

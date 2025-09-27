@@ -1,4 +1,4 @@
-import type { ViewPreferenceConfig } from '@/typings'
+import type { PracticeMediaConfig, ViewPreferenceConfig } from '@/typings'
 
 export const EXPLICIT_SPACE = '␣'
 
@@ -22,4 +22,9 @@ export const defaultFontSizeConfig = {
 export const defaultViewPreferenceConfig: ViewPreferenceConfig = {
   fontFamily: 'system',
   contrastTheme: 'default',
+}
+
+export const defaultPracticeMediaConfig: PracticeMediaConfig = {
+  isIllustrationEnabled: true,
+  illustrationProvider: 'unsplash',
 }

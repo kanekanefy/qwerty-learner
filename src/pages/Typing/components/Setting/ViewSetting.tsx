@@ -1,13 +1,14 @@
 import styles from './index.module.css'
 import { defaultFontSizeConfig } from '@/constants'
-import { fontSizeConfigAtom, viewPreferenceConfigAtom } from '@/store'
+import { dyslexiaConfigAtom, fontSizeConfigAtom, practiceMediaConfigAtom, viewPreferenceConfigAtom } from '@/store'
 import type { ViewContrastThemeOption, ViewFontFamilyOption } from '@/typings'
-import { Listbox, Transition } from '@headlessui/react'
+import { Listbox, Switch, Transition } from '@headlessui/react'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import * as Slider from '@radix-ui/react-slider'
 import { useAtom } from 'jotai'
 import type { CSSProperties } from 'react'
 import { Fragment, useCallback, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import IconCheck from '~icons/tabler/check'
 import IconChevronDown from '~icons/tabler/chevron-down'
 
@@ -79,6 +80,8 @@ const contrastOptions: ContrastOption[] = [
 export default function ViewSetting() {
   const [fontSizeConfig, setFontsizeConfig] = useAtom(fontSizeConfigAtom)
   const [viewPreferenceConfig, setViewPreferenceConfig] = useAtom(viewPreferenceConfigAtom)
+  const [practiceMediaConfig, setPracticeMediaConfig] = useAtom(practiceMediaConfigAtom)
+  const [dyslexiaConfig, setDyslexiaConfig] = useAtom(dyslexiaConfigAtom)
 
   const selectedFontOption = useMemo(
     () => fontFamilyOptions.find((option) => option.value === viewPreferenceConfig.fontFamily) ?? fontFamilyOptions[0],
@@ -132,6 +135,46 @@ export default function ViewSetting() {
       }))
     },
     [setViewPreferenceConfig],
+  )
+
+  const onToggleIllustration = useCallback(
+    (checked: boolean) => {
+      setPracticeMediaConfig((prev) => ({
+        ...prev,
+        isIllustrationEnabled: checked,
+      }))
+    },
+    [setPracticeMediaConfig],
+  )
+
+  const onToggleDyslexiaMode = useCallback(
+    (checked: boolean) => {
+      setDyslexiaConfig((prev) => ({
+        ...prev,
+        isDyslexiaModeEnabled: checked,
+      }))
+    },
+    [setDyslexiaConfig],
+  )
+
+  const onChangeTtsService = useCallback(
+    (value: 'browser' | 'external') => {
+      setDyslexiaConfig((prev) => ({
+        ...prev,
+        ttsService: value,
+      }))
+    },
+    [setDyslexiaConfig],
+  )
+
+  const onToggleReadOutTypedLetters = useCallback(
+    (checked: boolean) => {
+      setDyslexiaConfig((prev) => ({
+        ...prev,
+        isReadOutTypedLettersEnabled: checked,
+      }))
+    },
+    [setDyslexiaConfig],
   )
 
   return (
@@ -269,6 +312,116 @@ export default function ViewSetting() {
           <button className="my-btn-primary ml-4 disabled:bg-gray-300" type="button" onClick={onResetFontSize} title="重置字体设置">
             重置字体设置
           </button>
+
+          <div className={styles.section}>
+            <span className={styles.sectionLabel}>图像辅助</span>
+            <div className={styles.block}>
+              <span className={styles.blockLabel}>单词示意图</span>
+              <div className="flex w-full items-start justify-between gap-4">
+                <div className="flex flex-1 flex-col">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">启用 Unsplash 图库</span>
+                  <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                    自动搜索单词联想图片，会缓存 30 天；需在环境变量中配置 VITE_UNSPLASH_ACCESS_KEY。
+                  </span>
+                </div>
+                <Switch checked={practiceMediaConfig.isIllustrationEnabled} onChange={onToggleIllustration} className="switch-root">
+                  <span className="sr-only">切换单词示意图</span>
+                  <span aria-hidden="true" className="switch-thumb" />
+                </Switch>
+              </div>
+              <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">图片来源：Unsplash。切换将在下一次练习时生效。</p>
+            </div>
+          </div>
+
+          <div className={styles.section}>
+            <span className={styles.sectionLabel}>阅读障碍支持</span>
+            <div className={styles.block}>
+              <span className={styles.blockLabel}>启用阅读障碍模式</span>
+              <div className="flex w-full items-start justify-between gap-4">
+                <div className="flex flex-1 flex-col">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">启用阅读障碍模式</span>
+                  <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">为阅读障碍用户优化显示和交互。</span>
+                </div>
+                <Switch checked={dyslexiaConfig.isDyslexiaModeEnabled} onChange={onToggleDyslexiaMode} className="switch-root">
+                  <span className="sr-only">切换阅读障碍模式</span>
+                  <span aria-hidden="true" className="switch-thumb" />
+                </Switch>
+              </div>
+            </div>
+            <div className={styles.block}>
+              <span className={styles.blockLabel}>文本转语音服务</span>
+              <Listbox value={dyslexiaConfig.ttsService} onChange={onChangeTtsService}>
+                <div className="relative w-full sm:w-80">
+                  <Listbox.Button className="listbox-button w-full">
+                    <div className="ql-select-label">
+                      <span className="ql-select-title text-sm font-medium text-gray-700 dark:text-gray-200">
+                        {dyslexiaConfig.ttsService === 'browser' ? '浏览器内置' : '外部服务'}
+                      </span>
+                    </div>
+                    <span className="ql-select-icon">
+                      <IconChevronDown className="focus:outline-none" />
+                    </span>
+                  </Listbox.Button>
+                  <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                    <Listbox.Options className="listbox-options z-20">
+                      <Listbox.Option value="browser">
+                        {({ selected }) => (
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-1 flex-col">
+                              <span className="text-sm font-medium">浏览器内置</span>
+                              <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">使用浏览器内置的语音合成API。</span>
+                            </div>
+                            {selected && (
+                              <span className="listbox-options-icon">
+                                <IconCheck className="focus:outline-none" />
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </Listbox.Option>
+                      <Listbox.Option value="external">
+                        {({ selected }) => (
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-1 flex-col">
+                              <span className="text-sm font-medium">外部服务</span>
+                              <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">使用更高质量的外部文本转语音服务。</span>
+                            </div>
+                            {selected && (
+                              <span className="listbox-options-icon">
+                                <IconCheck className="focus:outline-none" />
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </Listbox.Option>
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+            </div>
+            <div className={styles.block}>
+              <span className={styles.blockLabel}>朗读按键字母</span>
+              <div className="flex w-full items-start justify-between gap-4">
+                <div className="flex flex-1 flex-col">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">启用按键字母朗读</span>
+                  <span className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">在打字时朗读您按下的每个字母。</span>
+                </div>
+                <Switch
+                  checked={dyslexiaConfig.isReadOutTypedLettersEnabled}
+                  onChange={onToggleReadOutTypedLetters}
+                  className="switch-root"
+                >
+                  <span className="sr-only">切换按键字母朗读</span>
+                  <span aria-hidden="true" className="switch-thumb" />
+                </Switch>
+              </div>
+            </div>
+            <div className={styles.block}>
+              <Link to="/dashboard" className="my-btn-primary">
+                查看仪表盘
+              </Link>
+            </div>{' '}
+          </div>
         </div>
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar className="flex touch-none select-none bg-transparent " orientation="vertical"></ScrollArea.Scrollbar>

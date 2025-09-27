@@ -13,6 +13,13 @@ export type ViewPreferenceConfig = {
   contrastTheme: ViewContrastThemeOption
 }
 
+export type IllustrationProvider = 'unsplash'
+
+export type PracticeMediaConfig = {
+  isIllustrationEnabled: boolean
+  illustrationProvider: IllustrationProvider
+}
+
 type Pronunciation2PhoneticMap = Record<PronunciationType, PhoneticType>
 
 export const PRONUNCIATION_PHONETIC_MAP: Pronunciation2PhoneticMap = {
@@ -33,6 +40,8 @@ export type Word = {
   usphone: string
   ukphone: string
   notation?: string
+  imageUrl?: string
+  isIrregular?: boolean
 }
 
 export type WordWithIndex = Word & {
