@@ -34,3 +34,19 @@ stats.html
 /blob-report/
 /playwright/.cache/
 playwright-report
+
+# IDE / Editor / Agent configs
+.vscode/
+.idea/
+.claude/
+.gemini/
+.specify/
+
+# Temporary files
+*.old
+
+# Demo files
+demosound.html
+
+# Specs
+specs/
