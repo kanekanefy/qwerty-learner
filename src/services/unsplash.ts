@@ -30,6 +30,7 @@ export type UnsplashImage = {
   photographerName: string
   photographerUsername: string | null
   photographerUrl: string
+  downloadLocation: string
   query: string
 }
 
@@ -57,7 +58,7 @@ export async function searchUnsplashImage(query: string, options: UnsplashSearch
     query: trimmedQuery,
     per_page: '1',
     orientation,
-    content_filter: contentFilter,
+    contentFilter,
   })
 
   const response = await fetch(`${UNSPLASH_ENDPOINT}?${params.toString()}`, {
@@ -81,6 +82,7 @@ export async function searchUnsplashImage(query: string, options: UnsplashSearch
       alt_description: string | null
       color?: string | null
       urls: { raw: string; full: string; regular: string; small: string; thumb: string }
+      links: { download_location: string }
       width: number
       height: number
       user: {
@@ -109,6 +111,22 @@ export async function searchUnsplashImage(query: string, options: UnsplashSearch
     photographerName: photo.user.name,
     photographerUsername: photo.user.username ?? null,
     photographerUrl: photo.user.links.html,
+    downloadLocation: photo.links.download_location,
     query: trimmedQuery,
+  }
+}
+
+export async function triggerUnsplashDownload(downloadLocation: string): Promise<void> {
+  if (!ACCESS_KEY) {
+    throw new UnsplashMissingKeyError()
+  }
+
+  const response = await fetch(`${downloadLocation}?client_id=${ACCESS_KEY}`, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    const message = `Unsplash download trigger failed with status ${response.status}`
+    throw new UnsplashRequestError(response.status, message)
   }
 }

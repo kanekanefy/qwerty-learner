@@ -198,6 +198,7 @@ export interface IMediaAssetRecord {
   photographerName: string
   photographerUsername?: string | null
   photographerUrl: string
+  downloadLocation: string
   description?: string | null
   fetchedAt: number
   expiresAt: number

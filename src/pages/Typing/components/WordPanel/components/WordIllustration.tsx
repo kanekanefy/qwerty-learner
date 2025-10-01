@@ -95,8 +95,7 @@ export function WordIllustration({ word, className }: WordIllustrationProps) {
         <button
           type="button"
           onClick={refresh}
-          disabled={status === 'loading'}
-          className="mt-1 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-500"
+          className="mt-1 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-500"
         >
           换一张
         </button>

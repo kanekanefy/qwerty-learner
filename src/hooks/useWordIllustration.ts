@@ -1,4 +1,10 @@
-import { UNSPLASH_SOURCE, UnsplashMissingKeyError, UnsplashRequestError, searchUnsplashImage } from '@/services/unsplash'
+import {
+  UNSPLASH_SOURCE,
+  UnsplashMissingKeyError,
+  UnsplashRequestError,
+  searchUnsplashImage,
+  triggerUnsplashDownload,
+} from '@/services/unsplash'
 import type { Word } from '@/typings'
 import type { IMediaAssetRecord } from '@/utils/db/record'
 import { deleteMediaAsset, getCachedMediaAsset, pruneExpiredMediaAssets, saveMediaAsset } from '@/utils/mediaAssets'
@@ -21,6 +27,7 @@ export type WordIllustrationData = {
     username?: string | null
     url: string
   }
+  downloadLocation: string
   query: string
   cached: boolean
 }
@@ -114,9 +121,16 @@ export function useWordIllustration(word: Word | undefined, options: UseWordIllu
               photographerName: image.photographerName,
               photographerUsername: image.photographerUsername,
               photographerUrl: image.photographerUrl,
+              downloadLocation: image.downloadLocation,
               description: image.description ?? null,
             })
             if (!isMounted) return
+            // 触发 Unsplash 下载统计
+            try {
+              await triggerUnsplashDownload(image.downloadLocation)
+            } catch (error) {
+              console.warn('[Unsplash] Failed to trigger download', error)
+            }
             setStatus('success')
             setData(mapRecordToData(record, false))
             setError(null)
@@ -294,6 +308,7 @@ function mapRecordToData(record: IMediaAssetRecord, cached: boolean): WordIllust
       username: record.photographerUsername,
       url: record.photographerUrl,
     },
+    downloadLocation: record.downloadLocation,
     query: record.query,
     cached,
   }
